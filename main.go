@@ -404,6 +404,9 @@ func waitLogs(ctx context.Context, id string, w *fsnotify.Watcher) (bool, bool, 
 			case fsnotify.Write:
 				klog.Info("fsnotify.Write")
 				return true, false, nil
+			case fsnotify.Chmod:
+				klog.Info("fsnotify.Chmod")
+				return true,false,nil
 			case fsnotify.Create:
 				klog.Info("fsnotify.Create")
 				fallthrough
@@ -412,10 +415,7 @@ func waitLogs(ctx context.Context, id string, w *fsnotify.Watcher) (bool, bool, 
 				fallthrough
 			case fsnotify.Remove:
 				klog.Info("fsnotify.Remove")
-				fallthrough
-			case fsnotify.Chmod:
-				klog.Info("fsnotify.Chmod")
-				return true, true, nil
+				return true, true, nil		
 			default:
 				klog.Errorf("Unexpected fsnotify event: %v, retrying...", e)
 			}
